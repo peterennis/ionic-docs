@@ -16,22 +16,26 @@
     "build-data": "ts-node -P scripts/tsconfig.json scripts/build-data",
     "build-pages": "ts-node -P scripts/tsconfig.json scripts/build-pages",
     "build-menus": "ts-node -P scripts/tsconfig.json scripts/build-menus",
-    "watch-pages": "ts-node -P scripts/tsconfig.json scripts/watch-pages"
+    "watch-pages": "ts-node -P scripts/tsconfig.json scripts/watch-pages",
+    "heroku-postbuild": "npm run build.ci"
   },
   "dependencies": {
-    "@ionic/core": "^4.6.2",
-    "@ionic/docs": "^4.6.2",
+    "@ionic/core": "^4.9.0",
+    "@ionic/docs": "^4.9.0",
     "@sentry/node": "^5.5.0",
-    "@stencil/router": "^1.0.0",
+    "@stencil/router": "^1.0.1",
     "compression": "^1.7.4",
     "express": "^4.16.4",
     "helmet": "^3.16.0",
+    "ionicons": "^4.6.1",
+    "simple-git": "^1.126.0",
     "throng": "^4.0.0"
   },
   "devDependencies": {
-    "@stencil/core": "^1.1.7",
+    "@stencil/core": "^1.4.0",
     "@types/prismjs": "^1.9.1",
     "chokidar": "^3.0.2",
+    "dotenv": "^8.1.0",
     "fast-glob": "^3.0.4",
     "front-matter": "^3.0.2",
     "fs-extra": "^8.1.0",
@@ -49,6 +53,5 @@
     "hooks": {
       "pre-commit": "npm run lint"
     }
-  },
-  "heroku-run-build-script": true
+  }
 }

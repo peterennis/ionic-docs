@@ -4,7 +4,7 @@ import plugins from '../data/native-plugins.json';
 export default () => <docs-nav items={items}/>;
 
 const items = {
-  'Community Edition': '/docs/native/overview',
-  'Enterprise Edition': '/docs/enterprise',
-  'Community Plugins': Object.entries(plugins).sort()
+  'menu-native-paid': '/docs/enterprise',
+  'menu-native-community': '/docs/native/overview',
+  'menu-native-community-all': Object.entries(plugins).sort()
 };

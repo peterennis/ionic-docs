@@ -1,15 +1,15 @@
 ---
 previousText: 'Lifecycle'
 previousUrl: '/docs/react/lifecycle'
-nextText: 'Performance'
-nextUrl: '/docs/react/performance'
+nextText: 'Config'
+nextUrl: '/docs/react/config'
 ---
 
 # React Navigation
 
 This guide covers how routing works in an app built with Ionic and React.
 
-Ionic React uses the popular [React Router](https://github.com/ReactTraining/react-router) library under the hood. With Ionic and React Router, you can create multi-page apps with rich page transitions.
+`IonReactRouter` uses the popular [React Router](https://github.com/ReactTraining/react-router) library under the hood. With Ionic and React Router, you can create multi-page apps with rich page transitions.
 
 Everything you know about routing using React Router carries over into Ionic React. Let's take a look at the basics of an Ionic React app and how routing works with it.
 
@@ -17,20 +17,20 @@ Everything you know about routing using React Router carries over into Ionic Rea
 
 Here is a sample `App` component that defines a single route to the "/dashboard" URL. When you visit "/dashboard", the route renders the `DashboardPage` component.
 
-`App.tsx`:
-```tsx
-const App: React.FC = () => {
-  return (
+**App.tsx**
+
+```typescript
+const App: React.FC = () =>
+  (
     <IonApp>
       <IonReactRouter>
-        <IonPage>
+        <IonRouterOutlet>
           <Route path="/dashboard" component={DashboardPage} />
           <Redirect exact from="/" to="/dashboard" />
-        </IonPage>
+        </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
   );
-};
 ```
 
 Directly after the `Route`, we define our default `Redirect`, which, when a user visits the root URL of the app ("/"), it redirects them to the "/dashboard" URL.
@@ -39,7 +39,7 @@ The redirect also has the `exact` prop set, which means the URL has to match the
 
 You can also programmatically redirect from a Route's render method based on a condition, like checking if a user is authed or not:
 
-```tsx
+```typescript
 <Route
   exact
   path="/dashboard"
@@ -57,33 +57,30 @@ The `IonReactRouter` component wraps the traditional [`BrowserRouter`](https://r
 
 Inside the Dashboard page, we define more routes related to this specific section of the app:
 
-`DashboardPage.tsx`:
-```tsx
+**DashboardPage.tsx**
+
+```typescript
 const DashboardPage: React.FC = () => {
   return (
-    <>
-      <IonRouterOutlet>
-        <Route exact path="/dashboard" component={UsersListPage} />
-        <Route path="/dashboard/users/:id" component={UserDetailPage} />
-      </IonRouterOutlet>
-    </>
+    <IonRouterOutlet>
+      <Route exact path="/dashboard" component={UsersListPage} />
+      <Route path="/dashboard/users/:id" component={UserDetailPage} />
+    </IonRouterOutlet>
   );
 };
 ```
 
-Here, there are a couple more routes defined to point to pages from within the dashboard portion of the app. Note, that we need to define the whole route in the path, and we can't leave off "/dashboard" even though we arrived to this page from that URL. React Router requires full paths, and relative paths are not supported. 
+Here, there are a couple more routes defined to point to pages from within the dashboard portion of the app. Note, that we need to define the whole route in the path, and we can't leave off "/dashboard" even though we arrived to this page from that URL. React Router requires full paths, and relative paths are not supported.
 
 However, we can use the [`match`](https://reacttraining.com/react-router/web/api/match) objects `url` property to provide the URL that was matched to render a component, which helps when working with nested routes:
 
-```tsx
+```typescript
 const DashboardPage: React.FC<RouteComponentProps> = ({match}) => {
   return (
-    <>
-      <IonRouterOutlet>
-        <Route exact path={match.url} component={UsersListPage} />
-        <Route path={`${match.url}/users/:id`} component={UserDetailPage} />
-      </IonRouterOutlet>
-    </>
+    <IonRouterOutlet>
+      <Route exact path={match.url} component={UsersListPage} />
+      <Route path={`${match.url}/users/:id`} component={UserDetailPage} />
+    </IonRouterOutlet>
   );
 };
 ```
@@ -106,11 +103,12 @@ An `IonRouterOutlet` should also not be a descendant from another `IonRouterOutl
 
 There are several options available when routing to different views in an Ionic React app. Here, the `UsersListPage` uses `IonItem`'s `href` prop to specify the route to go to when the item is tapped/clicked:
 
-`UsersListPage.tsx`:
-```tsx
+**UsersListPage.tsx**
+
+```typescript
 const UsersListPage: React.FC = () => {
   return (
-    <>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Users</IonTitle>
@@ -126,7 +124,7 @@ const UsersListPage: React.FC = () => {
           </IonItem>
         </IonList>
       </IonContent>
-    </>
+    </IonPage>
   );
 };
 ```
@@ -137,11 +135,11 @@ Outside of an `IonItem`, you can also use React Routers [`Link`](https://reacttr
 <Link to="/dashboard/users/1">User 1</Link>
 ```
 
-We recommend using one of the above methods whenever possible for routing. The advantage to these approaches is that they both render an anchor (`<a>`)tag, which is suitable for overall app accessibility. 
+We recommend using one of the above methods whenever possible for routing. The advantage to these approaches is that they both render an anchor (`<a>`)tag, which is suitable for overall app accessibility.
 
 A programmatic option for navigation is using the [`history`](https://reacttraining.com/react-router/web/api/history) prop that React Router provides to the components it renders via routes.
 
-```html
+```typescript
 <IonButton
   onClick={e => {
     e.preventDefault();
@@ -157,15 +155,16 @@ A programmatic option for navigation is using the [`history`](https://reacttrain
 
 The second route defined in the Dashboard Page has a URL parameter defined (the ":id" portion in the path). URL parameters are dynamic portions of the `path`, and when the user navigates to a URL such as "/dashboard/users/1", the "1" is saved to a parameter named "id", which can be accessed in the component the route renders. Let's see how that's done.
 
-`UserDetailPage.tsx`:
-```tsx
+**UserDetailPage.tsx**
+
+```typescript
 interface UserDetailPageProps extends RouteComponentProps<{
   id: string;
 }> {}
 
 const UserDetailPage: React.FC<UserDetailPageProps> = ({match}) => {
   return (
-    <>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>User Detail</IonTitle>
@@ -174,7 +173,7 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match}) => {
       <IonContent>
         User {match.params.id}
       </IonContent>
-    </>
+    </IonPage>
   );
 };
 ```
@@ -191,7 +190,7 @@ While the syntax looks a bit strange, it is reasonably straightforward once you 
 
 For example, the routes for a view with two tabs (sessions and speakers) can be set up as such:
 
-```tsx
+```typescript
 <IonRouterOutlet>
   <Route path="/:tab(sessions)" component={SessionsPage} exact={true} />
   <Route path="/:tab(sessions)/:id" component={SessionDetail} />

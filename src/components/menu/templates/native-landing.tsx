@@ -3,11 +3,11 @@ import plugins from '../data/native-plugins.json';
 
 export default () => <docs-nav items={items}/>;
 const communityPlugins = Object.entries(plugins).sort().slice(0, 6);
-communityPlugins.unshift(['Overview', '/docs/native/overview']);
-communityPlugins.push(['Show all CE plugins...', '/docs/native/overview']);
+communityPlugins.unshift(['menu-native-community-overview', '/docs/native/overview']);
+communityPlugins.push(['menu-native-community-show-all', '/docs/native/overview']);
 const items = {
-  'Enterprise Edition': {
-    'Overview': '/docs/enterprise',
+  'menu-native-paid': {
+    'menu-native-paid-overview': '/docs/enterprise',
     'Browser': '/docs/enterprise/inappbrowser',
     'Camera': '/docs/enterprise/camera',
     'Device': '/docs/enterprise/device',
@@ -15,7 +15,7 @@ const items = {
     'Geolocation': '/docs/enterprise/geolocation',
     'Identity Vault': '/docs/enterprise/identity-vault',
     'Network Information': '/docs/enterprise/network-information',
-    'Show all EE plugins...': '/docs/enterprise',
+    'menu-native-paid-show-all': '/docs/enterprise',
   },
-  'Community Edition': communityPlugins,
+  'menu-native-community': communityPlugins,
 };

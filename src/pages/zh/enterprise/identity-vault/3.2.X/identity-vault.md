@@ -106,7 +106,7 @@ constructor(private http: HttpClient, private router: Router, platform: Platform
 
 ## Automatically adding your token to requests
 
-If you'd like to automatically add your authorization token from your user service to every request, you can see a simple example at in our [demo repo](https://github.com/ionic-team/cs-demo-iv/blob/feature/identityVault/src/app/services/http-interceptors/auth-interceptor.ts).
+If you'd like to automatically add your authorization token from your user service to every request, you can see a simple example at in our [demo repo](https://github.com/ionic-team/cs-demo-iv/blob/master/src/app/services/http-interceptors/auth-interceptor.ts).
 
 ## API Documentation
 
@@ -1405,7 +1405,7 @@ The vaultId for the vault you wish to access
 
 ▸ **onConfig**(event: *[PluginConfiguration](#pluginconfiguration)*): `any`
 
-A handler that will recieve events any time the vault is configuration is changed
+A handler that will receive events any time the vault is configuration is changed
 
 **Parameters:**
 
@@ -1443,7 +1443,7 @@ Called when there is an error during vault setup
 
 ▸ **onLock**(event: *[LockEvent](#lockevent)*): `any`
 
-A handler that will recieve events any time the vault is locked
+A handler that will receive events any time the vault is locked
 
 **Parameters:**
 
@@ -1481,7 +1481,7 @@ Called when the vault is configured and available.
 
 ▸ **onUnlock**(event: *[PluginConfiguration](#pluginconfiguration)*): `any`
 
-A handler that will recieve events any time the vault is unlocked
+A handler that will receive events any time the vault is unlocked
 
 **Parameters:**
 
@@ -1745,7 +1745,7 @@ The possible values returned by [getBiometricType](#identityvault.getbiometricty
 
 ### Features
 
-- Added [getPlugin](#identityvaultuser.getplugin) method which can be overridden in advanced use cases to provide custom implementations for PWA compatability etc.
+- Added [getPlugin](#identityvaultuser.getplugin) method which can be overridden in advanced use cases to provide custom implementations for PWA compatibility etc.
 
 ### Bug Fixes
 

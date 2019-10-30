@@ -147,6 +147,9 @@ export namespace Components {
   interface FileTreeFile {
     'name': string;
   }
+  interface FrameworkSelect {
+    'onToggleClick': (e: Event) => void;
+  }
   interface HeaderMobileCollapse {
     'darkMode': boolean;
   }
@@ -157,6 +160,10 @@ export namespace Components {
     'mobile': boolean;
   }
   interface LayeredColorsSelect {}
+  interface NativeEntInstall {
+    'pluginId': string;
+    'variables'?: string;
+  }
   interface NewColorGenerator {}
   interface SmsForm {}
   interface SteppedColorGenerator {}
@@ -378,6 +385,12 @@ declare global {
     new (): HTMLFileTreeFileElement;
   };
 
+  interface HTMLFrameworkSelectElement extends Components.FrameworkSelect, HTMLStencilElement {}
+  var HTMLFrameworkSelectElement: {
+    prototype: HTMLFrameworkSelectElement;
+    new (): HTMLFrameworkSelectElement;
+  };
+
   interface HTMLHeaderMobileCollapseElement extends Components.HeaderMobileCollapse, HTMLStencilElement {}
   var HTMLHeaderMobileCollapseElement: {
     prototype: HTMLHeaderMobileCollapseElement;
@@ -400,6 +413,12 @@ declare global {
   var HTMLLayeredColorsSelectElement: {
     prototype: HTMLLayeredColorsSelectElement;
     new (): HTMLLayeredColorsSelectElement;
+  };
+
+  interface HTMLNativeEntInstallElement extends Components.NativeEntInstall, HTMLStencilElement {}
+  var HTMLNativeEntInstallElement: {
+    prototype: HTMLNativeEntInstallElement;
+    new (): HTMLNativeEntInstallElement;
   };
 
   interface HTMLNewColorGeneratorElement extends Components.NewColorGenerator, HTMLStencilElement {}
@@ -461,10 +480,12 @@ declare global {
     'file-tree': HTMLFileTreeElement;
     'file-tree-directory': HTMLFileTreeDirectoryElement;
     'file-tree-file': HTMLFileTreeFileElement;
+    'framework-select': HTMLFrameworkSelectElement;
     'header-mobile-collapse': HTMLHeaderMobileCollapseElement;
     'hubspot-form': HTMLHubspotFormElement;
     'ionic-search': HTMLIonicSearchElement;
     'layered-colors-select': HTMLLayeredColorsSelectElement;
+    'native-ent-install': HTMLNativeEntInstallElement;
     'new-color-generator': HTMLNewColorGeneratorElement;
     'sms-form': HTMLSmsFormElement;
     'stepped-color-generator': HTMLSteppedColorGeneratorElement;
@@ -602,6 +623,9 @@ declare namespace LocalJSX {
   interface FileTreeFile extends JSXBase.HTMLAttributes<HTMLFileTreeFileElement> {
     'name'?: string;
   }
+  interface FrameworkSelect extends JSXBase.HTMLAttributes<HTMLFrameworkSelectElement> {
+    'onToggleClick'?: (e: Event) => void;
+  }
   interface HeaderMobileCollapse extends JSXBase.HTMLAttributes<HTMLHeaderMobileCollapseElement> {
     'darkMode'?: boolean;
   }
@@ -612,6 +636,10 @@ declare namespace LocalJSX {
     'mobile'?: boolean;
   }
   interface LayeredColorsSelect extends JSXBase.HTMLAttributes<HTMLLayeredColorsSelectElement> {}
+  interface NativeEntInstall extends JSXBase.HTMLAttributes<HTMLNativeEntInstallElement> {
+    'pluginId'?: string;
+    'variables'?: string;
+  }
   interface NewColorGenerator extends JSXBase.HTMLAttributes<HTMLNewColorGeneratorElement> {}
   interface SmsForm extends JSXBase.HTMLAttributes<HTMLSmsFormElement> {}
   interface SteppedColorGenerator extends JSXBase.HTMLAttributes<HTMLSteppedColorGeneratorElement> {}
@@ -655,10 +683,12 @@ declare namespace LocalJSX {
     'file-tree': FileTree;
     'file-tree-directory': FileTreeDirectory;
     'file-tree-file': FileTreeFile;
+    'framework-select': FrameworkSelect;
     'header-mobile-collapse': HeaderMobileCollapse;
     'hubspot-form': HubspotForm;
     'ionic-search': IonicSearch;
     'layered-colors-select': LayeredColorsSelect;
+    'native-ent-install': NativeEntInstall;
     'new-color-generator': NewColorGenerator;
     'sms-form': SmsForm;
     'stepped-color-generator': SteppedColorGenerator;

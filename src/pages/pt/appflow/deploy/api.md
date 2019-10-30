@@ -406,7 +406,7 @@ async performAutomaticUpdate() {
     const resp = await Deploy.sync({updateMethod: 'auto'}, percentDone => {
       console.log(`Update is ${percentDone}% done!`);
     });
-    if (currentVersion.versionId !== resp.versionId){
+    if (!currentVersion || currentVersion.versionId !== resp.versionId){
       // We found an update, and are in process of redirecting you since you put auto!
     }else{
       // No update available
@@ -954,14 +954,14 @@ The deploy plugin uses variables to configure the way in which the plugin behave
 ### App ID
 
 * **Required**
-* The app id is required to recieve updates for an app in the Appflow dashboard.
+* The app id is required to receive updates for an app in the Appflow dashboard.
 * `ionic deploy add --app-id=abcdef12`
 * `ionic cordova plugin add cordova-plugin-ionic --variable APP_ID=abcdef12`
 
 ### Channel Name
 
 * **Required**
-* The channel name is required to recieve updates for an app in the Appflow dashboard and indicates the channel from which the device will recieve updates. Note this can also be updated programatically at runtime for advanced use cases.
+* The channel name is required to receive updates for an app in the Appflow dashboard and indicates the channel from which the device will receive updates. Note this can also be updated programatically at runtime for advanced use cases.
 * `ionic deploy add --channel-name=Production`
 * `ionic cordova plugin add cordova-plugin-ionic --variable CHANNEL_NAME=Production`
 
@@ -979,8 +979,8 @@ The deploy plugin uses variables to configure the way in which the plugin behave
 
 * **Default** `2`
 * This tells the plugin the number of previous updates it should keep on the device in order to speed up the rollback process if ever needed.
-* `ionic deploy add --max-versions=Production`
-* `ionic cordova plugin add cordova-plugin-ionic --variable MAX_VERSIONS=Production`
+* `ionic deploy add --max-versions=2`
+* `ionic cordova plugin add cordova-plugin-ionic --variable MAX_STORE=2`
 
 ### Min Background Duration
 
@@ -999,7 +999,7 @@ The deploy plugin uses variables to configure the way in which the plugin behave
 
 ## 5.4.3
 
-* Fix issue where types caused incompatability with Ionic v3 (Typescript 2.x)
+* Fix issue where types caused incompatibility with Ionic v3 (Typescript 2.x)
 
 ### 5.4.0
 
@@ -1064,7 +1064,7 @@ The deploy plugin uses variables to configure the way in which the plugin behave
 
 ### 5.0.6
 
-* Fixed a bug with version rebulds that could make some initial redirects take up to 15 seconds.
+* Fixed a bug with version rebuilds that could make some initial redirects take up to 15 seconds.
 
 ### 5.0.5
 

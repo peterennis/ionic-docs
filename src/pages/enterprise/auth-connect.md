@@ -5,14 +5,17 @@ version: 1.2.0
 minor: 1.2.X
 ---
 
-Overview
---------
+Ionic Auth Connect handles logging in and/or registering a user with an authentication provider (such as Auth0, Azure AD, or AWS Cognito) using industry standard OAuth/OpenId Connect on iOS, Android, or on the web.
 
-The Auth Plugin handles logging in and/or registering a user with an authentication provider (such as Auth0, Azure AD, or AWS Cognito) using industry standard OAuth/OpenId Connect on iOS and Android, or on the web.
+When used with [Ionic Identity Vault](/docs/enterprise/identity-vault), it provides a complete security solution for authentication and storage of logged-in credentials.
 
-When used with the [Ionic Identity Vault](/docs/enterprise/identity-vault) plugin, it provides a complete secure solution for authentication and storage of logged-in credentials.
+Auth Connect also allows your app to support multiple authentication providers. Should you need to change providers, easily switch between them without having to develop a new solution. [Learn more.](https://ionicframework.com/auth-connect)
 
-The Auth Plugin also allows your app to support multiple authentication providers. Should you need to change providers, easily switch between them without having to develop a new solution.
+<native-ent-install plugin-id="auth" variables="--variable AUTH_URL_SCHEME=mycustomscheme"></native-ent-install>
+
+## Reference App
+
+A [complete login/logout experience](https://github.com/ionic-team/demo-authconnect-auth0) using Auth0. Simply swap the Auth0 configuration in the `IonicAuthOptions` object to switch to a different auth provider.
 
 Configuring Auth Connect
 ------------------------
@@ -29,15 +32,8 @@ Supported Providers
 Leveraging the OAuth/OpenId Connect protocols, Auth Connect supports:
 
 * [Auth0](/docs/enterprise/auth-connect/auth0)
-* Azure Active Directory v.2 (Microsoft)
-* Cognito (AWS)  
-
-### Handling password reset cases from Azure AD with custom user flows/policies
-
-When using custom user flows/policies with Azure AD, password reset functionality needs to be handled by a separate endpoint. To handle this:
-
-If an error is thrown after the [Login](#iionicauth.login) function is called, the hosting app should inspect the `message` property. If it starts with the string `AADB2C90118` (an error message returned by Azure AD),
-then the app should call [Login](#iionicauth.login) again, this time specifying the location of the password reset endpoint.
+* [Azure Active Directory B2C](/docs/enterprise/auth-connect/azure-ad-b2c) (Microsoft)
+* [Cognito](/docs/enterprise/auth-connect/aws-cognito) (AWS)
 
 Workflow
 ----
@@ -52,28 +48,33 @@ The typical Auth Connect workflow consists of:
 5. The [IsAuthenticated](#iionicauth.isauthenticated) method can be called at any point to refresh the access token.
 6. Use [GetAccessToken](#getaccesstoken) to retrieve the access token if making any API requests to the auth provider.
 
-Implicit/Web Flow Notes
+Web Configuration Options
 -----------------------
 
-The redirect URL for the auth service needs to be a local path that the hosting app can navigate to, as the auth plugin needs to read the tokens from the redirect URL. The auth service needs to support returning the authorization and id tokens back to the implicit path (for Azure, this is under App registrations/Authentication in the 'Implicit Grants' section).
+### Login UX Options
 
-### OAuth login within the app
+Login can occur either within the current tab/window or a separate pop-up window (the default). Here's a visual comparison:
 
-Optionally, the OAuth login can occur within the current app (rather than opening up in the default pop-up). This is a great option for developers supporting IE11.
+<wistia-video video-id="zk3ys1615x"></wistia-video>
 
-Within the `IonicAuthOptions` configuration, set `implicit_login` to "TABBED". Next, in the login page (or whichever page is navigated to after login - the `redirectUri` in the config options) implement:
+The current tab option is great for developers supporting IE11. Within the `IonicAuthOptions` configuration, set `implicit_login` to "CURRENT". Next, in the login page (or whichever page is navigated to after login - the `redirectUri` in the config options) implement:
 
 ```typescript  
-  async ngOnInit() {
-    // If there's a hash value in the URL
-    if (window.location.hash) {
-      // Pass it to Auth Connect
-      await this.authentication.handleCallback(window.location.href);
-      // Navigate to another page
-      this.navController.navigateRoot('/tabs/home');
+async ngOnInit() {
+  // If coming back after logging into the auth provider,
+  // grab the token from the URL and pass it to Auth Connect
+  if (window.location.hash) {
+    // Pass it to Auth Connect
+    await this.authentication.handleCallback(window.location.href);
+    // Navigate to another page
+    this.navController.navigateRoot('/tabs/home');
     }
-  }
+}
 ```
+
+### Testing Locally
+
+To test an Ionic app using Auth Connect locally, configure `IonicAuthOptions` to use `http://localhost:8100/` as the base URL for properties such as `redirectUri` and `logoutUrl`. Then, run the `ionic serve` command.
 
 Upgrade from v1.1.1 to >=v1.1.2
 -------------------------------

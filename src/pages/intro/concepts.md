@@ -15,11 +15,11 @@ For those completely new to Ionic app development, it can be helpful to get a hi
 Ionic Framework is a library of UI Components, which are reusable elements that serve as the building blocks for an application. Ionic Components are built with [web standards](/docs/faq/glossary#web-standards) using HTML, CSS, and JavaScript. Though the components are pre-built, they're designed from the ground up to be highly customizable so apps can make each component their own, allowing each app to have its own look and feel. More specifically, Ionic components can be easily themed to globally change appearance across an entire app. For more information about customizing the look, please see [Theming](/docs/theming/basics).
 
 
-## Platform Continuity
+## Adaptive Styling
 
-Platform Continuity is a built-in feature of Ionic Framework which allows app developers to use the same code base for multiple platforms. Every Ionic component adapts its look to the platform on which the app is running on. For example, Apple devices, such as the iPhone and iPad, use Apple's own <a href="https://www.apple.com/ios" target="_blank">iOS design language</a>. Similarly, Android devices use Google's design language called <a href="https://material.io/guidelines/" target="_blank">Material Design</a>.
+Adaptive Styling is a built-in feature of Ionic Framework which allows app developers to use the same code base for multiple platforms. Every Ionic component adapts its look to the platform on which the app is running on. For example, Apple devices, such as the iPhone and iPad, use Apple's own <a href="https://www.apple.com/ios" target="_blank">iOS design language</a>. Similarly, Android devices use Google's design language called <a href="https://material.io/guidelines/" target="_blank">Material Design</a>.
 
-By making subtle design changes between the platforms, users are provided with a familiar app experience. An Ionic app downloaded from Apple's App Store will get the iOS theme, while an Ionic app downloaded from Android's Play Store will get the Material Design theme. For the apps that are viewed as a Progressive Web App (PWA) from a browser, Ionic will default to using the Material Design theme. Additionally, deciding which platform to use in certain scenarios is entirely configurable. More information about platform continuity can be found in [Theming](/docs/theming/basics).
+By making subtle design changes between the platforms, users are provided with a familiar app experience. An Ionic app downloaded from Apple's App Store will get the iOS theme, while an Ionic app downloaded from Android's Play Store will get the Material Design theme. For the apps that are viewed as a Progressive Web App (PWA) from a browser, Ionic will default to using the Material Design theme. Additionally, deciding which platform to use in certain scenarios is entirely configurable. More information about adaptive styling can be found in [Theming](/docs/theming/basics).
 
 
 ## Navigation
@@ -39,7 +39,7 @@ Previous versions of Ionic shipped with our own custom router, but in order to p
 
 An amazing feature of apps built with web technologies (such as Ionic apps!) is that it can run on virtually any platform: desktop computers, phones, tablets, cars, refrigerators, and more! The same code base for Ionic apps can work on many platforms because it is based on web standards and common APIs that are shared across these platforms.
 
-One of the most common use cases for Ionic is to build an app which can be downloaded from both the <a href="https://www.apple.com/ios/app-store/" target="_blank">App Store</a> and <a href="https://play.google.com/" target="_blank">Play Store</a>. Both iOS and Android software development kits (SDKs) provide "[web views](/docs/building/webview)" which render any Ionic app, while still allowing for <i>full</i> Native SDK access.
+One of the most common use cases for Ionic is to build an app which can be downloaded from both the <a href="https://www.apple.com/ios/app-store/" target="_blank">App Store</a> and <a href="https://play.google.com/" target="_blank">Play Store</a>. Both iOS and Android software development kits (SDKs) provide [Web Views](/docs/building/webview) which render any Ionic app, while still allowing for <i>full</i> Native SDK access.
 
 Projects such as <a href="https://capacitor.ionicframework.com/" target="_blank">Capacitor</a> and <a href="https://cordova.apache.org/" target="_blank">Cordova</a> are commonly used to give Ionic apps this access to Native SDKs. This means developers can quickly build out an app using common web development tools, and still have access to native features such as the device's accelerometer, camera, GPS, and more.
 

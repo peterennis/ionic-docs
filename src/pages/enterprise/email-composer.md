@@ -9,6 +9,17 @@ The Email Composer plugin provides the ability to programmatically create and se
 
 <native-ent-install plugin-id="email-composer" variables=""></native-ent-install>
 
+#### Using with AndroidX Projects (Android)
+
+This plugin relies on the legacy Android Support libraries and will not work in projects using the newer AndroidX libraries without using the [jetifier](https://www.npmjs.com/package/jetifier) tool to patch them.
+
+```bash
+npm install jetifier
+npx jetifier
+```
+
+To run it automatically when dependencies are installed, add `"postinstall": "jetifier"` in the `package.json`.
+
 ## Index
 
 ### Classes
@@ -91,6 +102,48 @@ Adds a new mail app alias.
 | packageName | `string` |  The package name |
 
 **Returns:** `void`
+
+___
+<a id="emailcomposer.getclients"></a>
+
+###  getClients
+
+▸ **getClients**(): `Promise`<`string`[]>
+
+Returns an array of email clients installed on the device.
+
+**Returns:** `Promise`<`string`[]>
+Resolves if available, rejects if not available
+
+___
+<a id="emailcomposer.hasaccount"></a>
+
+###  hasAccount
+
+▸ **hasAccount**(): `Promise`<`any`>
+
+Verifies if an email account is configured on the device.
+
+**Returns:** `Promise`<`any`>
+Resolves if available, rejects if not available
+
+___
+<a id="emailcomposer.hasclient"></a>
+
+###  hasClient
+
+▸ **hasClient**(app: *`string`*): `Promise`<`any`>
+
+Verifies if a specific email client is installed on the device.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| `Optional` app | `string` |
+
+**Returns:** `Promise`<`any`>
+Resolves if available, rejects if not available
 
 ___
 <a id="emailcomposer.haspermission"></a>

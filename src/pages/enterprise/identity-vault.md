@@ -1,8 +1,8 @@
 ---
 title: Identity Vault
 template: enterprise-plugin
-version: 4.0.0
-minor: 4.0.X
+version: 4.2.6
+minor: 4.2.X
 otherVersions:
   - 2.0.X
   - 3.0.X
@@ -12,6 +12,8 @@ otherVersions:
   - 3.4.X
   - 3.5.X
   - 3.6.X
+  - 4.0.X
+  - 4.1.X
 ---
 
 # Ionic Identity Vault
@@ -126,6 +128,7 @@ You can find the API and interface documentation for everything below. The main 
 ### Type aliases
 
 * [BiometricType](#biometrictype)
+* [SupportedBiometricType](#supportedbiometrictype)
 
 ---
 
@@ -404,6 +407,22 @@ Clear all vault data including stored tokens, values, and passcodes. The vault w
 **Returns:** `Promise`<`void`>
 
 ___
+<a id="identityvault.getavailablehardware"></a>
+
+###  getAvailableHardware
+
+▸ **getAvailableHardware**(): `Promise`<[SupportedBiometricType](#supportedbiometrictype)[]>
+
+Gets the types of biometrics the device supports.
+
+Please note, this method only shows the biometrics the device is capable of, and does not reflect whether the biometric methods are enrolled or enabled.
+
+Traditionally Android has only supported fingerprint biometrics through the SDK. As of Android 10 multiple options are supported. Samsung devices can offer iris and face biometrics that exists outside the scope of the Android SDK. Since there is no official Android SDK support to detect those Samsung features, we attempt to determine their presence based on if the device has the Samsung face or iris biometrics software installed.
+
+**Returns:** `Promise`<[SupportedBiometricType](#supportedbiometrictype)[]>
+the list of biometrics the device supports
+
+___
 <a id="identityvault.getbiometrictype"></a>
 
 ###  getBiometricType
@@ -411,6 +430,8 @@ ___
 ▸ **getBiometricType**(): `Promise`<[BiometricType](#biometrictype)>
 
 Get the type of biometrics the device supports
+
+*__deprecated__*: this method has been deprecated in favor of [getAvailableHardware](#identityvault.getavailablehardware)
 
 **Returns:** `Promise`<[BiometricType](#biometrictype)>
 the type of biometrics the device supports
@@ -546,6 +567,18 @@ Check whether the vault is currently locked
 
 **Returns:** `Promise`<`boolean`>
 whether the vault is locked
+
+___
+<a id="identityvault.islockedoutofbiometrics"></a>
+
+###  isLockedOutOfBiometrics
+
+▸ **isLockedOutOfBiometrics**(): `Promise`<`boolean`>
+
+Check whether the biometrics are locked on the device
+
+**Returns:** `Promise`<`boolean`>
+whether biometrics are locked
 
 ___
 <a id="identityvault.ispasscodeenabled"></a>
@@ -1359,7 +1392,7 @@ ___
 
 **● hideScreenOnBackground**: *`boolean`*
 
-Obscures the app when backgrounded to avoid leaking sensitive information, such as financial statements or balances
+Obscures the app when backgrounded to avoid leaking sensitive information, such as financial statements or balances. App screenshots won't work on Android 10 devices using gesture navigation if this option is set to true.
 
 ___
 <a id="pluginconfiguration.isbiometricsenabled"></a>
@@ -1417,6 +1450,19 @@ ___
 
 The options passed the the [IonicNativeAuthPlugin](#ionicnativeauthplugin) when creating a vault with [getVault](#identityvaultuser.getvault)
 
+<a id="pluginoptions.allowsystempinfallback"></a>
+
+### `<Optional>` allowSystemPinFallback
+
+**● allowSystemPinFallback**: *`boolean`*
+
+If biometric auth fails, allow system pin fallback.
+
+Please note: when Android devices are set to allow system pin fallback, the behavior of the biometrics prompt changes. The OS biometric prompt will not report that biometrics failed nor that the user has been locked out of biometrics. It is only currently possible to know the user either canceled the authentication prompt, or was successful in verifying.
+
+*__default__*: false
+
+___
 <a id="pluginoptions.androidpromptdescription"></a>
 
 ### `<Optional>` androidPromptDescription
@@ -1467,7 +1513,7 @@ ___
 
 **● hideScreenOnBackground**: *`boolean`*
 
-Obscures the app when backgrounded to avoid leaking sensitive information, such as financial statements or balances
+Obscures the app when backgrounded to avoid leaking sensitive information, such as financial statements or balances. App screenshots won't work on Android 10 devices using gesture navigation if this option is set to true.
 
 ___
 <a id="pluginoptions.lockafter"></a>
@@ -1477,6 +1523,17 @@ ___
 **● lockAfter**: *`number`*
 
 The amount of number of milliseconds the app can be in the background for until the vault locks
+
+___
+<a id="pluginoptions.shouldclearvaultaftertoomanyfailedattempts"></a>
+
+### `<Optional>` shouldClearVaultAfterTooManyFailedAttempts
+
+**● shouldClearVaultAfterTooManyFailedAttempts**: *`boolean`*
+
+After too many failed authentication attempts, should the vault be cleared?
+
+*__default__*: true
 
 ___
 <a id="pluginoptions.username"></a>
@@ -1592,6 +1649,17 @@ ___
 
 The configuration file returned to event handlers such as [onConfigChange](#identityvaultuser.onconfigchange) and [onVaultReady](#identityvaultuser.onvaultready).
 
+<a id="vaultconfig.allowsystempinfallback"></a>
+
+### `<Optional>` allowSystemPinFallback
+
+**● allowSystemPinFallback**: *`boolean`*
+
+If biometric auth fails, allow system pin fallback.
+
+*__default__*: false
+
+___
 <a id="vaultconfig.androidpromptdescription"></a>
 
 ### `<Optional>` androidPromptDescription
@@ -1653,7 +1721,7 @@ ___
 
 **● hideScreenOnBackground**: *`boolean`*
 
-Obscures the app when backgrounded to avoid leaking sensitive information, such as financial statements or balances
+Obscures the app when backgrounded to avoid leaking sensitive information, such as financial statements or balances. App screenshots won't work on Android 10 devices using gesture navigation if this option is set to true.
 
 *__default__*: false
 
@@ -1676,6 +1744,17 @@ ___
 The amount of number of milliseconds the app can be in the background for until the vault locks. A value of 0 means the vault won't lock in the background.
 
 *__default__*: 0
+
+___
+<a id="vaultconfig.shouldclearvaultaftertoomanyfailedattempts"></a>
+
+### `<Optional>` shouldClearVaultAfterTooManyFailedAttempts
+
+**● shouldClearVaultAfterTooManyFailedAttempts**: *`boolean`*
+
+After too many failed authentication attempts, should the vault be cleared?
+
+*__default__*: true
 
 ___
 
@@ -1758,6 +1837,17 @@ ___
 
 The options passed in to initialize the vault.
 
+<a id="vaultoptions.allowsystempinfallback"></a>
+
+### `<Optional>` allowSystemPinFallback
+
+**● allowSystemPinFallback**: *`boolean`*
+
+If biometric auth fails, allow system pin fallback.
+
+*__default__*: false
+
+___
 <a id="vaultoptions.androidpromptdescription"></a>
 
 ### `<Optional>` androidPromptDescription
@@ -1819,7 +1909,7 @@ ___
 
 **● hideScreenOnBackground**: *`boolean`*
 
-Obscures the app when backgrounded to avoid leaking sensitive information, such as financial statements or balances
+Obscures the app when backgrounded to avoid leaking sensitive information, such as financial statements or balances. App screenshots won't work on Android 10 devices using gesture navigation if this option is set to true.
 
 *__default__*: false
 
@@ -1844,6 +1934,17 @@ ___
 Whether or not to attempt to automatically restore the session when the vault is ready If [restoreSessionOnReady](#vaultoptions.restoresessiononready) and [unlockOnAccess](#vaultoptions.unlockonaccess) are both true the vault will be immediately unlocked & the session restored if onReady if the vault is in use.
 
 *__default__*: false
+
+___
+<a id="vaultoptions.shouldclearvaultaftertoomanyfailedattempts"></a>
+
+### `<Optional>` shouldClearVaultAfterTooManyFailedAttempts
+
+**● shouldClearVaultAfterTooManyFailedAttempts**: *`boolean`*
+
+After too many failed authentication attempts, should the vault be cleared?
+
+*__default__*: true
 
 ___
 <a id="vaultoptions.unlockonaccess"></a>
@@ -1881,9 +1982,107 @@ ___
 
 The possible values returned by [getBiometricType](#identityvault.getbiometrictype)
 
+*__deprecated__*: these types have been deprecated in favor of {@link SupportedBiometricTypes}
+
+___
+<a id="supportedbiometrictype"></a>
+
+###  SupportedBiometricType
+
+**Ƭ SupportedBiometricType**: *"fingerprint" \| "face" \| "iris"*
+
+The possible values returned by [getAvailableHardware](#identityvault.getavailablehardware)
+
 ___
 
 ## Change Log
+
+
+
+### [4.2.6] (2020-09-02)
+
+
+### Bug Fixes
+
+* **android:** lifecycle events moved to the main thread
+
+
+
+### [4.2.5] (2020-08-10)
+
+
+### Bug Fixes
+
+* **iOS:** ensure the privacy screen image view appears as expected [CT-138] 
+
+
+
+### [4.2.4] (2020-07-22)
+
+
+### Bug Fixes
+
+* **android:** reset auth attempts when clearing/resetting auth [CT-83] 
+* **iOS:** ensure screen is always obscured when needed [CT-61] 
+
+
+
+### [4.2.2] (2020-06-10)
+
+
+### Bug Fixes
+
+* add lock call to clean up in-memory mode , closes [#118]
+* **iOS:** ensuring that the screen is always hidden when backgrounded SE-202  
+
+
+
+### [4.2.1] (2020-05-27)
+
+
+### Bug Fixes
+
+* **android:** avoid crash on detecting gesture navigation when using hideScreen 
+
+
+
+### [4.2.0] (2020-05-13)
+
+
+### Bug Fixes
+
+* **android:** Added transparent theme for biometric auth activity SE-188  
+* **android:** make hideScreen work when using gesture navigation  
+
+
+### Features
+
+* added method getAvailableHardware to return list of biometrics options 
+
+
+
+### [4.1.0] (2020-04-29)
+
+
+### Bug Fixes
+
+* **cordova:** remove full paths in config file targets  
+
+
+### Features
+
+* `allowSystemPinFallback`, `shouldClearVaultAfterTooManyFailedAttempts`, and `isLockedOutOfBiometrics 
+
+
+
+### [4.0.1] (2020-04-17)
+
+
+### Bug Fixes
+
+* **android:** clear vault when there are too many failed bio unlock attempts  
+* **ios:** clear vault when there are too many failed bio unlock attempts 
+* allow install in cordova-android 9-dev 
 
 
 
@@ -1904,6 +2103,14 @@ ___
 
 * **android:** AndroidX is now required in projects with IV v4.
 
+
+### [3.6.4] (2020-05-13)
+
+
+### Bug Fixes
+
+* **android:** avoid KeyPermanentlyInvalidatedException problem on SDK 19 [SE-183]
+* **ios:** swift 4.2 compilation issue
 
 
 ### [3.6.3] (2020-04-01)

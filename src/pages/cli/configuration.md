@@ -67,6 +67,25 @@ The CLI can run scripts during certain events, such as before and after builds. 
 * `ionic:serve:after`: executed after the dev server is terminated
 * `ionic:build:before`: executed before a web asset build begins
 * `ionic:build:after`: executed after a web asset build finishes
+* `ionic:capacitor:run:before`: executed during `ionic capacitor run` before capacitor open is executed
+* `ionic:capacitor:build:before`: executed during `ionic capacitor build` before capacitor open is executed
+* `ionic:capacitor:sync:after`: executed during `ionic capacitor sync` after a sync
+
+When using a shell script for any of the hooks, hook context is defined in environment variables prefixed with `IONIC_CLI_HOOK_CTX_`.
+
+The following example shows the environment variables that are set for the `ionic:capacitor:build` hook.
+
+```shell
+IONIC_CLI_HOOK_CTX_NAME=capacitor:build:before
+IONIC_CLI_HOOK_CTX_BUILD_CORDOVA_ASSETS=true
+IONIC_CLI_HOOK_CTX_BUILD_ENGINE=browser
+IONIC_CLI_HOOK_CTX_BUILD_PROJECT=app
+IONIC_CLI_HOOK_CTX_BUILD_TYPE=angular
+IONIC_CLI_HOOK_CTX_BUILD_VERBOSE=false
+IONIC_CLI_HOOK_CTX_CAPACITOR_APP_ID=io.ionic.starter
+IONIC_CLI_HOOK_CTX_CAPACITOR_APP_NAME=ionic-starter-app
+IONIC_CLI_HOOK_CTX_CAPACITOR_VERBOSE=false
+```
 
 Hooks can also be defined in `ionic.config.json`. Define a `hooks` object within the project, where each key is the name of the hook (without the `ionic:` prefix), and the value is a path to a JavaScript file or an array of paths.
 

@@ -1,18 +1,18 @@
 ---
-previousText: 'Introduction'
-previousUrl: '/docs/appflow/cookbook/intro'
-nextText: 'Using private NPM modules'
-nextUrl: '/docs/appflow/cookbook/private_npm_modules'
+previousText: "Migrating from PhoneGap Build"
+previousUrl: "/docs/appflow/cookbook/phonegap-build-migration"
+nextText: "Using private NPM modules"
+nextUrl: "/docs/appflow/cookbook/private_npm_modules"
 ---
 
-# Using private GIT repositories
+# Using private Git repositories
 
 During the build process, it might be necessary to access other private repositories containing, for instance, libraries.
 
 In case such repositories do not belong to the same user that can clone the main application codebase, it is
 possible to use git credentials codebase.
 
-### How to use GIT Credentials
+### How to use Git Credentials
 
 The first step is to generate a personal access token: see the
 [github](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
@@ -21,11 +21,13 @@ or [bitbucket](https://confluence.atlassian.com/bitbucket/app-passwords-82878130
 Then build an url for the Git Credentials.
 
 The URL for github looks like:
+
 ```
 https://<username>:<token>@github.com
 ```
 
 while for bitbucket looks like:
+
 ```
 https://<username>:<token>@bitbucket.org
 ```

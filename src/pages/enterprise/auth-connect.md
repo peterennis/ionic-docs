@@ -1,11 +1,14 @@
 ---
 title: Auth Connect
 template: enterprise-plugin
-version: 1.8.1
-minor: 1.8.X
+version: 3.1.4
+minor: 3.1.X
+otherVersions:
+  - 2.2.X
+  - 3.0.X
 ---
 
-Ionic Auth Connect handles logging in and/or registering a user with an authentication provider (such as Auth0, Azure AD, or AWS Cognito) using industry standard OAuth/OpenId Connect on iOS, Android, or on the web.
+Ionic Auth Connect handles logging in and/or registering a user with an authentication provider (such as Auth0, Azure AD, AWS Cognito, or Okta) using industry standard OAuth/OpenId Connect on iOS, Android, or on the web.
 
 When used with [Ionic Identity Vault](/docs/enterprise/identity-vault), it provides a complete security solution for authentication and storage of logged-in credentials.
 
@@ -60,6 +63,7 @@ Leveraging the OAuth/OpenId Connect protocols, Auth Connect supports:
     * v1.0
     * v2.0, including [Azure Active Directory B2C](/docs/enterprise/auth-connect/azure-ad-b2c)
 * [Cognito](/docs/enterprise/auth-connect/aws-cognito) (AWS)
+* [Okta](/docs/enterprise/auth-connect/okta)
 
 Workflow
 ----
@@ -125,7 +129,7 @@ Login can occur either within the current tab/window or a separate pop-up window
 
 <wistia-video video-id="zk3ys1615x"></wistia-video>
 
-The current tab option is great for developers supporting IE11. Within the `IonicAuthOptions` configuration, set `implicit_login` to "CURRENT". Next, in the login page (or whichever page is navigated to after login - the `redirectUri` in the config options) implement:
+Within the `IonicAuthOptions` configuration, set `implicit_login` to "CURRENT". Next, in the login page (or whichever page is navigated to after login - the `redirectUri` in the config options) implement:
 
 ```typescript  
 async ngOnInit() {
@@ -136,7 +140,7 @@ async ngOnInit() {
     await this.authentication.handleCallback(window.location.href);
     // Navigate to another page
     this.navController.navigateRoot('/tabs/home');
-    }
+  }
 }
 ```
 
@@ -144,50 +148,15 @@ async ngOnInit() {
 
 To test an Ionic app using Auth Connect locally, configure `IonicAuthOptions` to use `http://localhost:8100/` as the base URL for properties such as `redirectUri` and `logoutUrl`. Then, run the `ionic serve` command.
 
-Upgrade from v1.1.1 to >=v1.1.2
--------------------------------
+## Upgrading to v3.0.0
 
-**Important Note**
+3.0.0 drops support for IE11 but otherwise is a drop-in replacement for 2.x.
 
-> If you're upgrading from version `1.1.1` to `>=1.1.2`, there are fewer dependencies required to install with the plugin. Simply run the commands below to upgrade. Imports and usage should remain identical.
+## Upgrading to v2.0.0
 
-NOTE: {your url scheme} is the app specific url schemes the plugin was installed with.
-
-First, remove v1.1.1 of the plugin:
-
-```shell
-ionic cordova plugin rm @ionic-enterprise/auth --variable AUTH_URL_SCHEME={your url scheme}
-```
-
-You should make sure `@ionic-enterprise/auth` and `cordova-plugin-advanced-http` are completely removed from your package.json in all locations.
-
-```javascript
-...
-  "dependencies": {
-    ...
-     // Make sure both these are gone from the dependencies
-    "@ionic-enterprise/auth": "1.1.1",
-    "cordova-plugin-advanced-http": "^2.0.9",
-    ...
-  }
-  "cordova": {
-    "plugins": {
-      ...
-      // Make sure both these are gone from the cordova plugins section as well
-      "@ionic-enterprise/auth": {},
-      "cordova-plugin-advanced-http": {}
-      ...
-    },
-    ...
-  }
-...
-```
-
-It should now be safe to add >=v1.1.2 of the plugin:
-
-```shell
-ionic cordova plugin add @ionic-enterprise/auth@latest --variable AUTH_URL_SCHEME={your url scheme}
-```
+* Upgrade your app to use `cordova-android` 9.x (see the [9.0.0 milestone](https://github.com/apache/cordova-android/milestone/2) for progress) or Capacitor 2.x.
+  * For Capacitor, please see the upgrade guide for [Android](https://capacitor.ionicframework.com/docs/android/updating) and [iOS](https://capacitor.ionicframework.com/docs/ios/updating).
+* Install the new plugin version.
 
 API Documentation
 -----------------
@@ -550,13 +519,18 @@ ___
 
 ### `<Optional>` authConfig
 
-**● authConfig**: *"auth0" \| "azure" \| "cognito" \| "salesforce" \| "general"*
+**● authConfig**: *"auth0" \| "azure" \| "cognito" \| "salesforce" \| "okta" \| "ping" \| "identity-server" \| "general"*
 
 The type of the Auth Server, currently only the following are supported:
 
 *   Auth0
 *   Azure Active Directory
 *   Cognito (AWS)
+*   Salesforce
+*   Okta
+*   Ping
+
+'general' is deprecated--please use a specific provider.
 
 ___
 <a id="ionicauthoptions.clientid"></a>
@@ -574,7 +548,7 @@ ___
 
 **● clientSecret**: *`undefined` \| `string`*
 
-The client secret, optional only required for Cognito/Web
+The client secret, optional
 
 ___
 <a id="ionicauthoptions.discoveryurl"></a>
@@ -706,13 +680,18 @@ ___
 
 ### `<Optional>` authConfig
 
-**● authConfig**: *"auth0" \| "azure" \| "cognito" \| "salesforce" \| "general"*
+**● authConfig**: *"auth0" \| "azure" \| "cognito" \| "salesforce" \| "okta" \| "ping" \| "identity-server" \| "general"*
 
 The type of the Auth Server, currently only the following are supported:
 
 *   Auth0
 *   Azure Active Directory
 *   Cognito (AWS)
+*   Salesforce
+*   Okta
+*   Ping
+
+'general' is deprecated--please use a specific provider.
 
 ___
 <a id="ionicgeneralauthoptions.clientid"></a>
@@ -730,7 +709,7 @@ ___
 
 **● clientSecret**: *`undefined` \| `string`*
 
-The client secret, optional only required for Cognito/Web
+The client secret, optional
 
 ___
 <a id="ionicgeneralauthoptions.discoveryurl"></a>
@@ -995,6 +974,139 @@ ___
 # Changelog
 
 
+
+### [3.1.4] (2020-09-02)
+
+
+### Bug Fixes
+
+* fix bug with localstorage provider where auth response wasn't serialized/deserialized correctly
+* remove unneeded redirectUri param from cognito logout
+* **auth:** export TokenStorageProvider
+* **ping:** don't always include client secret
+
+### [3.1.3] (2020-07-28)
+
+
+### Bug Fixes
+
+* fix issue with logout for identity server 
+
+### [3.1.2] (2020-07-24)
+
+
+### Bug Fixes
+
+* Fix issue where IonicGeneralAuthOptions was not exported. 
+
+### [3.1.1] (2020-07-09)
+
+
+### Bug Fixes
+
+* **web-auth:** add missing await to PKCE refresh  
+
+### [3.1.0] (2020-06-29)
+
+
+### Features
+
+* Add official IdentityServer intergration 
+
+
+### Bug Fixes
+
+* fix a bug where the handleCallback method did not properly unwrap the auth result promise 
+
+### [3.0.1] (2020-06-24)
+
+
+### Bug Fixes
+
+* **auth:** do not resolve when replacing URL 
+
+### [3.0.0] (2020-06-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* IE 11 is no longer supported.
+* Plugin must be imported and bundled into your app for use. (Code is no longer being exported to window.)
+
+### Bug Fixes
+
+* Properly decode JWTs with non-ASCII characters [SE-200]  
+
+
+* remove shims 
+* switch to esm 
+
+### [2.2.1] (2020-05-29)
+
+
+### Bug Fixes
+
+* **okta:** fix logout configuration  
+
+### [2.2.0] (2020-05-27)
+
+
+### Features
+
+* Okta integration  
+
+
+### Bug Fixes
+
+* **android:** make source-file target-dir lowercase 
+* **web:** add client secret to postToken body if required 
+
+### [2.1.0] (2020-04-23)
+
+
+### Features
+
+* add support for Ping  
+
+
+### Bug Fixes
+
+* **web:** add client secret to postToken body if required   
+
+### [2.0.1] (2020-04-17)
+
+
+### Bug Fixes
+
+* make client_secret optional for Cognito  
+
+### [2.0.0] (2020-04-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* AndroidX is now required in projects with auth v2.
+
+### Features
+
+* add isAccessTokenExpired, isRefreshTokenAvailable, getRefreshToken, refreshSession  
+* Add support for Saleforce 
+* isAccessTokenAvailable  
+* **android:** AndroidX upgrade  
+
+
+### Bug Fixes
+
+* **Android:** Fix an issue where Auth Connect didn't work on Android 10. 
+* await the access token from storage  
+* Fix a bug where if a provider doesn't return when the access token expires it defaults to be immediately expired. 
+* Fix an issue where if refresh failed isAuthenticated still returned true 
+* **ios:** move AuthenticationServices import from .m to .h for Capacitor compat  
+* **web:** catch error on refresh frame creation 
+* **web, cognito:** fix for SE-150. Added logout_uri to list of valid params. 
+
+
+* Add upgrading to v2 instructions  
 
 ### [1.8.1] (2020-04-01)
 

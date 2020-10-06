@@ -17,6 +17,8 @@ const items = {
     'menu-developing-ios': '/docs/developing/ios',
     'menu-developing-android': '/docs/developing/android',
     'menu-developing-tips': '/docs/developing/tips',
+    'menu-developing-hardware-back-button': '/docs/developing/hardware-back-button',
+    'menu-developing-keyboard': '/docs/developing/keyboard',
   },
   'menu-layout': {
     'menu-layout-structure': '/docs/layout/structure',
@@ -28,6 +30,7 @@ const items = {
     'menu-theming-basics': '/docs/theming/basics',
     'menu-theming-platform-styles': '/docs/theming/platform-styles',
     'menu-theming-css-variables': '/docs/theming/css-variables',
+    'menu-theming-css-shadow-parts': '/docs/theming/css-shadow-parts',
     'menu-theming-colors': '/docs/theming/colors',
     'menu-theming-themes': '/docs/theming/themes',
     'menu-theming-dark-mode': '/docs/theming/dark-mode',
@@ -75,9 +78,22 @@ const items = {
   },
   'menu-vue': {
     'menu-vue-overview': '/docs/vue/overview',
+    'menu-vue-quickstart': '/docs/vue/quickstart',
     'menu-vue-your-first-app': '/docs/vue/your-first-app',
+    '': {
+      'menu-vue-yfa-taking-photos': '/docs/vue/your-first-app/2-taking-photos',
+      'menu-vue-yfa-saving-photos': '/docs/vue/your-first-app/3-saving-photos',
+      'menu-vue-yfa-loading-photos': '/docs/vue/your-first-app/4-loading-photos',
+      'menu-vue-yfa-adding-mobile': '/docs/vue/your-first-app/5-adding-mobile',
+      'menu-vue-yfa-deploying-mobile': '/docs/vue/your-first-app/6-deploying-mobile',
+      'menu-vue-yfa-live-reload': '/docs/vue/your-first-app/7-live-reload'
+    },
     'menu-vue-lifecycle': '/docs/vue/lifecycle',
-    'menu-vue-navigation': '/docs/vue/navigation'
+    'menu-vue-navigation': '/docs/vue/navigation',
+    'menu-vue-config': '/docs/vue/config',
+    'menu-vue-platform': '/docs/vue/platform',
+    'menu-vue-pwa': '/docs/vue/pwa',
+    'menu-vue-testing': '/docs/vue/testing'
   },
   'menu-utilities': {
     'menu-utilities-animations': '/docs/utilities/animations',

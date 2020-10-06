@@ -1,8 +1,9 @@
 import { h } from '@stencil/core';
+
 import { GitBranch } from '../../../icons';
 import { toHypertext } from '../to-hypertext';
 
-export default (props) => {
+export default (props: { [key: string]: any }) => {
   const { page } = props;
   const headings = [...page.headings];
   const repo = renderRepo(page.repo);
@@ -50,7 +51,7 @@ export default (props) => {
 
   return (
     <article>
-      <h1>{ page.title }</h1>
+      <h1>{page.title}</h1>
       <div class="page-meta">
         <docs-table-of-contents links={headings} basepath={page.path}/>
         <internal-ad></internal-ad>
@@ -58,32 +59,32 @@ export default (props) => {
       <section class="markdown-content">
         {toHypertext(h, page.body)}
       </section>
-      { repo }
-      { isPremier }
-      { cordovaPromo }
-      { installation }
-      { platforms }
-      { capIncompat }
-      { usage }
+      {repo}
+      {isPremier}
+      {cordovaPromo}
+      {installation}
+      {platforms}
+      {capIncompat}
+      {usage}
     </article>
   );
 };
 
-const renderRepo = (repo: string) => {
-  if (!repo) {
+const renderRepo = (repo?: string) => {
+  if (typeof repo === 'undefined') {
     return null;
   }
 
   return (
     <section>
-      <a href={repo} class="outbound" target="_blank"><GitBranch/> { repo }</a>
+      <a href={repo} class="outbound" target="_blank"><GitBranch/> {repo}</a>
     </section>
   );
 };
 
-const renderCordovaPromotion = (isPremier: string) => {
+const renderCordovaPromotion = (isPremier: string | null) => {
   // Only show one promo message
-  if (isPremier) {
+  if (isPremier !== null) {
     return;
   }
 
@@ -101,8 +102,8 @@ const renderCordovaPromotion = (isPremier: string) => {
   );
 };
 
-const renderInstallation = (cordova: string, npm: string) => {
-  if (!cordova || !npm) {
+const renderInstallation = (cordova?: string, npm?: string) => {
+  if (typeof cordova === 'undefined' || typeof npm === 'undefined') {
     return null;
   }
 
@@ -126,7 +127,7 @@ const renderInstallation = (cordova: string, npm: string) => {
           </command-line>
         </docs-tab>
         <docs-tab tab="Enterprise">
-          <blockquote>Ionic Native Enterprise comes with fully supported and maintained plugins from the Ionic Team. &nbsp;
+          <blockquote>Ionic Enterprise comes with fully supported and maintained plugins from the Ionic Team. &nbsp;
             <a class="btn" href="/docs/enterprise">Learn More</a> or if you're interested in an enterprise version of this plugin <a class="btn" href="https://ionicframework.com/sales?product_of_interest=Ionic%20Enterprise%20Engine">Contact Us</a></blockquote>
         </docs-tab>
       </docs-tabs>
@@ -135,7 +136,7 @@ const renderInstallation = (cordova: string, npm: string) => {
 };
 
 const renderPlatforms = (platforms: string[] = []) => {
-  if (!platforms.length) {
+  if (platforms.length === 0) {
     return null;
   }
 
@@ -163,7 +164,11 @@ const renderUsage = (usage: any) => {
       <h2 id="usage">
         <a href="#usage">Usage</a>
       </h2>
-      <p><strong>Using React?</strong> <stencil-route-link url={`/docs/native/community#react`}>See here.</stencil-route-link></p>
+      <p>
+        <h3>React</h3>
+        <stencil-route-link url={`/docs/native/community#react`}>See here.</stencil-route-link>
+      </p>
+      <h3>Angular</h3>
       {toHypertext(h, usage)}
     </section>
   );
@@ -184,8 +189,8 @@ const renderCapIncompat = (capacitorIncompatible: boolean) => {
   );
 };
 
-const renderPremier = (premierSlug: string) => {
-  if (!premierSlug) {
+const renderPremier = (premierSlug: string | null) => {
+  if (premierSlug === null) {
     return null;
   }
 
@@ -194,8 +199,11 @@ const renderPremier = (premierSlug: string) => {
       <h2 id="premier">
         <a href="#premier">Premier Version Available</a>
       </h2>
-      <docs-card class="cordova-ee-card"
-        header="Plugins and solutions built and supported by Ionic." href={`/docs/enterprise/${premierSlug}`}>
+      <docs-card
+        class="cordova-ee-card"
+        header="Plugins and solutions built and supported by Ionic."
+        href={`/docs/enterprise/${premierSlug}`}
+      >
         <div>
           <img src="/docs/assets/icons/native-enterprise.png" class="cordova-ee-img" />
           <p>Featuring regular release cycles, security and bug fixes, and guaranteed SLAs.</p>

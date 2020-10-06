@@ -12,6 +12,8 @@ otherVersions:
   - 3.4.X
   - 3.5.X
   - 3.6.X
+  - 4.0.X
+  - 4.1.X
 ---
 
 Ionic Identity Vault

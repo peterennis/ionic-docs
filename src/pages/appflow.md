@@ -5,7 +5,7 @@ tableOfContents: false
 
 Appflow is a continuous integration (CI) and continuous deployment (CD) platform
 for Ionic development teams. Appflow helps development teams continuously build and ship
-their iOS, Android, and web apps faster than ever.
+their Cordova and Capacitor apps faster than ever.
 
 <docs-cards class="static-width">
   <docs-card header="Quickstart" href="/docs/appflow/quickstart/connect" img="/docs/assets/icons/guide-quickstart.png">
@@ -24,6 +24,10 @@ their iOS, Android, and web apps faster than ever.
 
   <docs-card header="Automate" href="/docs/appflow/automation/intro" icon="/docs/assets/icons/guide-automate-icon.png">
     <p>Automate your Deploy and Package builds to help you team ship better updates faster.</p>
+  </docs-card>
+
+   <docs-card header="Deploy to App Stores" href="/docs/appflow/destinations/intro" icon="/docs/assets/icons/guide-quickstart-icon.png">
+    <p>Publish directly to the iOS App Store and Google Play Store, directly from your cloud dashboard.</p>
   </docs-card>
 
   <docs-card header="News & Updates" href="https://ionic.zendesk.com/hc/en-us/categories/360000410554-Announcements" icon="/docs/assets/icons/guide-news-icon.png">

@@ -1,6 +1,8 @@
-import { Component, Prop, State, Watch, h } from '@stencil/core';
+import { Build, Component, Prop, State, Watch, h } from '@stencil/core';
 import { RouterHistory } from '@stencil/router';
+
 import { Page } from '../../definitions';
+
 import templates from './templates';
 
 @Component({
@@ -8,19 +10,23 @@ import templates from './templates';
   styleUrl: 'page.css'
 })
 export class DocsPage {
-  @Prop() history: RouterHistory;
-  @Prop() path: string;
-  @Prop({ context: 'isServer' }) private isServer: boolean;
-  @State() badFetch: Response = null;
+  @Prop() history!: RouterHistory;
+  @Prop() path!: string;
+  @Prop() isServer?: boolean;
+  @State() badFetch?: Response | null;
   @State() page: Page = { title: null, body: null };
+
+  constructor() {
+    this.isServer = !Build.isBrowser;
+  }
 
   componentWillLoad() {
     return this.fetchPage(this.path);
   }
 
   @Watch('path')
-  fetchPage(path, oldPath?) {
-    if (path == null || path === oldPath) return;
+  fetchPage(path: string | null, oldPath?: string) {
+    if (path === null || path === oldPath) { return; }
     path = /^\/docs\/pages\/[a-z]{2}\.json$/.test(path)
       ? path.replace('.json', '/index.json')
       : path;
@@ -30,12 +36,12 @@ export class DocsPage {
       .catch(this.handleBadFetch);
   }
 
-  validateFetch = (response) => {
-    if (!response.ok) throw response;
+  validateFetch = (response: Response) => {
+    if (!response.ok) { throw response; }
     return response.json();
   }
 
-  handleNewPage = (page) => {
+  handleNewPage = (page: Page) => {
     this.badFetch = null;
     this.page = page;
   }
@@ -50,7 +56,9 @@ export class DocsPage {
 
   @Watch('page')
   setScrollPosition() {
-    if (this.isServer || this.history.location.hash) {
+    const hash = this.history.location.hash;
+
+    if (this.isServer || (hash !== undefined && hash !== '')) {
       return;
     }
 
@@ -72,15 +80,15 @@ export class DocsPage {
       image: document.head.querySelectorAll('.meta-image')
     };
 
-    function updateMeta(els, update) {
-      els.forEach(el => {
+    const updateMeta = (els: any, update: any) => {
+      els.forEach((el: any) => {
         ['href', 'content'].forEach(attr => {
           if (el.hasAttribute(attr)) {
             el.setAttribute(attr, update(el.getAttribute(attr)));
           }
         });
       });
-    }
+    };
 
     // Title
     const getTitle = () => {
@@ -93,12 +101,9 @@ export class DocsPage {
     updateMeta(metaEls.title, getTitle);
 
     // Canonical URL
-    updateMeta(metaEls.url, oldVal => {
+    updateMeta(metaEls.url, (oldVal: string) => {
       const uri = '\/docs\/';
-      let path = location.pathname.split(uri)[1];
-      if (path === undefined) {
-        path = '';
-      }
+      const path = location.pathname.split(uri)[1];
       return oldVal.split(uri)[0] + uri + path;
     });
 
@@ -127,7 +132,7 @@ export class DocsPage {
       return templates.error(this.badFetch);
     }
 
-    const Template = templates[page.template] || templates.default;
+    const Template = (templates as any)[page.template] || templates.default;
 
     const content = [
       <main class={hasDemo ? 'has-demo' : 'no-demo'}>

@@ -1,25 +1,25 @@
 import { Build, Component, Element, Prop, h } from '@stencil/core';
-import { Outbound } from '../../icons';
-import { MenuItems } from '../../definitions';
+
+import { MenuItem, MenuItems } from '../../definitions';
 import { l10n } from '../../l10n';
+
+import { link } from './link';
 
 @Component({
   tag: 'docs-nav',
   styleUrl: 'nav.css'
 })
 export class DocsNav {
-  @Element() element: HTMLElement;
-  @Prop() items: MenuItems;
+  @Element() el!: HTMLElement;
+  @Prop() items!: MenuItems;
 
-  private normalizeItems(items) {
+  private normalizeItems(items: MenuItems | MenuItem[]): any[] {
     return Array.isArray(items) ? items : Object.entries(items);
   }
 
-  private isExternalLink(href: string) {
-    return href.indexOf('http') === 0;
-  }
+  toLink = link;
 
-  toItem = (item, level = 0) => {
+  toItem = (item: any, level = 0) => {
     const [id, value] = item;
     switch (typeof value) {
       case 'string':
@@ -35,64 +35,33 @@ export class DocsNav {
     }
   }
 
-  toLink = (item) => {
-    const [id, href] = item;
-    const text = l10n.getString(id) || id;
-    const isExternal = this.isExternalLink(href);
-
-    if (isExternal) {
-      return (
-        <a href={href}
-          target="_blank"
-          class="Nav-link outbound">
-            <span>{text}</span> <Outbound/>
-        </a>
-      );
-    }
-
-    const prefix = /^\/docs(\/[a-z]{2})?\//;
-    const language = l10n.getLocale();
-    const url = language !== 'en'
-      ? `/docs/${language}/${href.replace(prefix, '')}`
-      : href;
-
-    return (
-      <stencil-route-link
-        url={url}
-        strict={false}
-        exact
-        activeClass="Nav-link--active"
-        anchorClass="Nav-link">
-          <span>{text}</span>
-      </stencil-route-link>
-    );
-  }
-
-  toSection = ([id, value], level) => {
+  toSection = ([id, value]: [string, MenuItems], level: number) => {
     const text = l10n.getString(id);
     const items = this.normalizeItems(value);
     return (
       <section>
-        { id !== '' && text !== undefined ? <header class="Nav-header">{text}</header> : null }
+        {id !== '' && text !== undefined ? <header class="Nav-header">{text}</header> : null}
         <ul
           class="Nav-subnav"
-          style={{ '--level': level }}>
-            {items.map(item => this.toItem(item, level))}
+          style={{ '--level': `${level}` }}
+        >
+          {items.map(item => this.toItem(item, level))}
         </ul>
       </section>
     );
   }
 
   setScroll = () => {
-    try {
-      this.element.querySelector('.Nav-link--active')
-        .scrollIntoView({
-          block: 'center'
-        });
-    } catch (err) {
-      this.element.offsetParent ?
-        this.element.offsetParent.scrollIntoView() :
-        this.element.scrollIntoView();
+    const activeLink = this.el.querySelector('.Nav-link--active');
+
+    if (activeLink) {
+      activeLink.scrollIntoView({
+        block: 'center'
+      });
+    } else {
+      this.el.offsetParent ?
+      this.el.offsetParent.scrollIntoView() :
+      this.el.scrollIntoView();
     }
   }
 
